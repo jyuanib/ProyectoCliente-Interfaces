@@ -15,6 +15,12 @@ function mostrarLibros(librosFiltrados, mensaje) {
       estado
     }))
   );
+
+  librosFiltrados.forEach((libro) => {
+    console.groupCollapsed(`Libro ${libro.id}: ${libro.titulo}`);
+    console.log(libro);
+    console.groupEnd();
+  });
 }
 
 const estanteria = document.querySelector(".banner");
