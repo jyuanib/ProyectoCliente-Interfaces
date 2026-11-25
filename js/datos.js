@@ -218,3 +218,5 @@ const libros = [
   }
 ];
 
+window.datosIniciales = { libros };
+

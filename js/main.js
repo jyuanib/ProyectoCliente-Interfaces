@@ -26,13 +26,13 @@ function mostrarLibros(librosFiltrados, mensaje) {
 const estanteria = document.querySelector(".banner");
 
 estanteria.addEventListener("click", () => {
-  mostrarLibros(libros, "Todos los libros:");
+  mostrarLibros(window.Almacen.obtenerTodos("libros"), "Todos los libros:");
 });
 
 estanteria.addEventListener("keydown", (evento) => {
   if (evento.key === "Enter" || evento.key === " ") {
     evento.preventDefault();
-    mostrarLibros(libros, "Todos los libros:");
+    mostrarLibros(window.Almacen.obtenerTodos("libros"), "Todos los libros:");
   }
 });
 
@@ -41,7 +41,7 @@ document.querySelectorAll(".btn-categoria").forEach((boton) => {
     evento.preventDefault();
 
     const estado = estadosPorCategoria[boton.getAttribute("href")];
-    const librosFiltrados = libros.filter((libro) => libro.estado === estado);
+    const librosFiltrados = window.Almacen.obtenerTodos("libros").filter((libro) => libro.estado === estado);
 
     mostrarLibros(librosFiltrados, `Libros con estado "${estado}":`);
   });
