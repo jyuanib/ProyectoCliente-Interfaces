@@ -4,7 +4,22 @@
     email: "El correo electrónico es obligatorio.",
     telefono: "El teléfono es obligatorio si prefieres que te llamemos.",
     motivo: "Selecciona un motivo para el mensaje.",
-    mensaje: "El mensaje es obligatorio."
+    mensaje: "El mensaje es obligatorio.",
+    usuario: "El nombre de usuario es obligatorio.",
+    contrasena: "La contraseña es obligatoria.",
+    repetirContrasena: "Repite la contraseña.",
+    fechaNacimiento: "La fecha de nacimiento es obligatoria.",
+    aceptaCondiciones: "Debes aceptar las condiciones."
+  };
+
+  const validarEmail = (valor) => {
+    if (valor.trim() === "") {
+      return null;
+    }
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor.trim())
+      ? null
+      : "Introduce un correo electrónico válido.";
   };
 
   const validarCampo = (campo) => {
@@ -17,8 +32,15 @@
 
     if (validez.typeMismatch) {
       return campo.type === "email"
-        ? "Introduce un correo electrónico válido."
+        ? validarEmail(valor)
         : "El valor introducido no tiene un formato válido.";
+    }
+
+    if (campo.type === "email") {
+      const errorEmail = validarEmail(valor);
+      if (errorEmail) {
+        return errorEmail;
+      }
     }
 
     if (campo.minLength >= 0 && valor.length < campo.minLength) {
@@ -38,6 +60,10 @@
     }
 
     if (validez.rangeOverflow) {
+      if (campo.name === "fechaNacimiento") {
+        return "La fecha de nacimiento no puede ser futura.";
+      }
+
       return `El valor debe ser igual o inferior a ${campo.max}.`;
     }
 
@@ -62,8 +88,43 @@
       : "Introduce un teléfono español válido (por ejemplo, 612 345 678).";
   };
 
+  const validarContrasena = (valor) => {
+    if (!/[A-ZÁÉÍÓÚÜÑ]/.test(valor)) {
+      return "La contraseña debe incluir al menos una mayúscula.";
+    }
+
+    if (!/\d/.test(valor)) {
+      return "La contraseña debe incluir al menos un número.";
+    }
+
+    return null;
+  };
+
+  const validarEdadMinima = (valor, edadMinima, fechaActual = new Date()) => {
+    if (!valor) {
+      return null;
+    }
+
+    const [anio, mes, dia] = valor.split("-").map(Number);
+    const anioActual = fechaActual.getFullYear();
+    const mesActual = fechaActual.getMonth() + 1;
+    const diaActual = fechaActual.getDate();
+
+    let edad = anioActual - anio;
+    if (mesActual < mes || (mesActual === mes && diaActual < dia)) {
+      edad -= 1;
+    }
+
+    return edad >= edadMinima
+      ? null
+      : `Debes tener al menos ${edadMinima} años para registrarte.`;
+  };
+
   window.Validacion = Object.freeze({
     validarCampo,
+    validarEmail,
     validarTelefono,
+    validarContrasena,
+    validarEdadMinima
   });
 })();

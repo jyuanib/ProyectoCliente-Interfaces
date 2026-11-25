@@ -13,7 +13,7 @@
 <body>
 
     <header>
-        <a href="#" class="logo" aria-label="Inicio"></a>
+        <a id="enlace-perfil" href="#panel-usuarios" class="logo" aria-label="Abrir perfil de usuario"></a>
         <nav aria-label="Acciones principales">
             <button type="button" aria-label="Buscar libros">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -135,6 +135,69 @@
                 <div id="lista-mensajes" aria-live="polite"></div>
             </section>
         </section>
+
+        <section id="panel-usuarios" class="contacto usuarios" aria-labelledby="titulo-usuarios" hidden>
+            <h1 id="titulo-usuarios">Usuarios</h1>
+            <form id="formulario-registro" novalidate>
+                <h2 id="titulo-formulario-registro">Crear usuario</h2>
+                <div class="campo-contacto">
+                    <label for="registro-usuario">Nombre de usuario</label>
+                    <input id="registro-usuario" name="usuario" type="text" autocomplete="username" required
+                        aria-describedby="error-registro-usuario">
+                    <small class="mensaje-error" id="error-registro-usuario"></small>
+                </div>
+
+                <div class="campo-contacto">
+                    <label for="registro-email">Correo electrónico</label>
+                    <input id="registro-email" name="email" type="email" autocomplete="email" required
+                        aria-describedby="error-registro-email">
+                    <small class="mensaje-error" id="error-registro-email"></small>
+                </div>
+
+                <div class="campo-contacto">
+                    <label for="registro-contrasena">Contraseña</label>
+                    <input id="registro-contrasena" name="contrasena" type="password"
+                        autocomplete="new-password" minlength="8" required
+                        aria-describedby="ayuda-contrasena error-registro-contrasena">
+                    <small id="ayuda-contrasena">Al menos 8 caracteres, una mayúscula y un número.</small>
+                    <small class="mensaje-error" id="error-registro-contrasena"></small>
+                </div>
+
+                <div class="campo-contacto">
+                    <label for="registro-repetir-contrasena">Repetir contraseña</label>
+                    <input id="registro-repetir-contrasena" name="repetirContrasena" type="password"
+                        autocomplete="new-password" required aria-describedby="error-registro-repetir-contrasena">
+                    <small class="mensaje-error" id="error-registro-repetir-contrasena"></small>
+                </div>
+
+                <div class="campo-contacto">
+                    <label for="registro-fecha-nacimiento">Fecha de nacimiento</label>
+                    <input id="registro-fecha-nacimiento" name="fechaNacimiento" type="date" required
+                        aria-describedby="ayuda-fecha-nacimiento error-registro-fecha-nacimiento">
+                    <small id="ayuda-fecha-nacimiento"></small>
+                    <small class="mensaje-error" id="error-registro-fecha-nacimiento"></small>
+                </div>
+
+                <div class="campo-contacto">
+                    <label class="opcion-llamada" for="registro-acepta-condiciones">
+                        <input id="registro-acepta-condiciones" name="aceptaCondiciones" type="checkbox" required
+                            aria-describedby="error-registro-acepta-condiciones">
+                        Acepto las condiciones
+                    </label>
+                    <small class="mensaje-error" id="error-registro-acepta-condiciones"></small>
+                </div>
+
+                <p>La contraseña no se guarda en este navegador. Para editar un usuario tendrás que volver a introducirla.</p>
+                <button id="boton-guardar-usuario" class="boton-contacto" type="submit">Crear usuario</button>
+                <button id="boton-cancelar-edicion" class="boton-contacto" type="button" hidden>Cancelar edición</button>
+                <p id="estado-registro" role="status" aria-live="polite"></p>
+            </form>
+
+            <section class="usuarios-registrados" aria-labelledby="subtitulo-usuarios">
+                <h2 id="subtitulo-usuarios">Usuarios registrados</h2>
+                <div id="lista-usuarios" aria-live="polite"></div>
+            </section>
+        </section>
     </main>
 
     <script src="js/datos.js"></script>
@@ -142,6 +205,7 @@
     <script src="js/validacion.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/contacto.js"></script>
+    <script src="js/registro.js"></script>
     <script src="js/main.js"></script>
 </body>
 

@@ -154,6 +154,15 @@ main {
     gap: 1rem;
 }
 
+#formulario-registro {
+    display: grid;
+    gap: 1rem;
+}
+
+.usuarios h2 {
+    margin-bottom: 1rem;
+}
+
 .campo-contacto {
     display: grid;
     gap: 0.4rem;
@@ -227,7 +236,16 @@ main {
     margin-top: 2rem;
 }
 
+.usuarios-registrados {
+    margin-top: 2rem;
+}
+
 #lista-mensajes {
+    display: grid;
+    gap: 1rem;
+}
+
+#lista-usuarios {
     display: grid;
     gap: 1rem;
 }
