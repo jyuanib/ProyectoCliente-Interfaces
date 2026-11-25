@@ -23,7 +23,7 @@ function mostrarLibros(librosFiltrados, mensaje) {
   });
 }
 
-const estanteria = document.querySelector(".banner");
+const { banner: estanteria, botonesCategoria } = window.UI.elementos;
 
 estanteria.addEventListener("click", () => {
   mostrarLibros(window.Almacen.obtenerTodos("libros"), "Todos los libros:");
@@ -36,7 +36,7 @@ estanteria.addEventListener("keydown", (evento) => {
   }
 });
 
-document.querySelectorAll(".btn-categoria").forEach((boton) => {
+botonesCategoria.forEach((boton) => {
   boton.addEventListener("click", (evento) => {
     evento.preventDefault();
 
