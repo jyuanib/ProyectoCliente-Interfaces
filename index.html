@@ -22,7 +22,8 @@
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
             </button>
-            <button type="button" aria-label="Abrir menú">
+            <button id="boton-menu" type="button" aria-label="Abrir menú"
+                aria-controls="menu-principal" aria-expanded="false">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     aria-hidden="true">
                     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -40,6 +41,12 @@
             </button>
         </nav>
     </header>
+
+    <nav id="menu-principal" class="menu-desplegable" aria-label="Menú principal" hidden>
+        <ul>
+            <li><a id="enlace-contacto" href="#panel-contacto">Contacto</a></li>
+        </ul>
+    </nav>
 
     <main>
         <img src="estanteria.jpg" alt="Estantería con el total de libros" class="banner" role="button"
@@ -66,10 +73,74 @@
                 <a href="#prestados" class="btn-categoria">Prestados</a>
             </article>
         </section>
+
+        <section id="panel-contacto" class="contacto" aria-labelledby="titulo-contacto" hidden>
+            <h1 id="titulo-contacto">Contacta con nosotros</h1>
+            <form id="formulario-contacto" novalidate>
+                <div class="campo-contacto">
+                    <label for="contacto-nombre">Nombre</label>
+                    <input id="contacto-nombre" name="nombre" type="text" autocomplete="name" required
+                        aria-describedby="error-nombre">
+                    <small class="mensaje-error" id="error-nombre"></small>
+                </div>
+
+                <div class="campo-contacto">
+                    <label for="contacto-email">Correo electrónico</label>
+                    <input id="contacto-email" name="email" type="email" autocomplete="email" required
+                        aria-describedby="error-email">
+                    <small class="mensaje-error" id="error-email"></small>
+                </div>
+
+                <div class="campo-contacto">
+                    <label for="contacto-telefono">Teléfono <span id="estado-telefono">(opcional)</span></label>
+                    <input id="contacto-telefono" name="telefono" type="tel" autocomplete="tel"
+                        inputmode="tel" placeholder="612 345 678" aria-describedby="error-telefono">
+                    <small class="mensaje-error" id="error-telefono"></small>
+                </div>
+
+                <label class="opcion-llamada" for="prefiero-llamada">
+                    <input id="prefiero-llamada" name="prefieroLlamada" type="checkbox">
+                    Prefiero que me llaméis
+                </label>
+
+                <div class="campo-contacto">
+                    <label for="contacto-motivo">Motivo</label>
+                    <select id="contacto-motivo" name="motivo" required aria-describedby="error-motivo">
+                        <option value="">Selecciona un motivo</option>
+                        <option value="consulta-libro">Consulta sobre un libro</option>
+                        <option value="problema-biblioteca">Problema con mi biblioteca</option>
+                        <option value="sugerencia-libro">Sugerir un libro</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                    <small class="mensaje-error" id="error-motivo"></small>
+                </div>
+
+                <div class="campo-contacto">
+                    <label for="contacto-mensaje">Mensaje</label>
+                    <textarea id="contacto-mensaje" name="mensaje" rows="6" minlength="20" maxlength="500"
+                        required aria-describedby="contador-mensaje error-mensaje"></textarea>
+                    <div class="ayuda-mensaje">
+                        <small>Entre 20 y 500 caracteres.</small>
+                        <small id="contador-mensaje" aria-live="polite">0 / 500 caracteres</small>
+                    </div>
+                    <small class="mensaje-error" id="error-mensaje"></small>
+                </div>
+
+                <button class="boton-contacto" type="submit">Enviar mensaje</button>
+                <p id="estado-envio" role="status" aria-live="polite"></p>
+            </form>
+
+            <section class="mensajes-enviados" aria-labelledby="titulo-mensajes">
+                <h2 id="titulo-mensajes">Mensajes enviados</h2>
+                <div id="lista-mensajes" aria-live="polite"></div>
+            </section>
+        </section>
     </main>
 
     <script src="js/datos.js"></script>
     <script src="js/almacen.js"></script>
+    <script src="js/validacion.js"></script>
+    <script src="js/contacto.js"></script>
     <script src="js/main.js"></script>
 </body>
 

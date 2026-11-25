@@ -93,6 +93,163 @@ main {
     display: block;
 }
 
+.contacto {
+    position: fixed;
+    top: 7rem;
+    right: 1.5rem;
+    z-index: 10;
+    width: min(760px, calc(100vw - 3rem));
+    max-height: calc(100vh - 8.5rem);
+    overflow-y: auto;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    background-color: #F7F1E8;
+    color: #241B16;
+    border-radius: 16px;
+    box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 30%);
+}
+
+.menu-desplegable {
+    position: fixed;
+    top: 7rem;
+    right: 1.5rem;
+    z-index: 10;
+    width: min(260px, calc(100vw - 3rem));
+    padding: 0.75rem;
+    background-color: #F7F1E8;
+    border-radius: 12px;
+    box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 30%);
+}
+
+.menu-desplegable ul {
+    display: grid;
+    gap: 0.5rem;
+    list-style: none;
+}
+
+.menu-desplegable a {
+    color: #751520;
+    text-decoration: underline;
+}
+
+.menu-desplegable a:focus-visible {
+    outline: 3px solid #D56470;
+    outline-offset: 2px;
+}
+
+.menu-desplegable[hidden] {
+    display: none;
+}
+
+.contacto[hidden] {
+    display: none;
+}
+
+.contacto h1,
+.mensajes-enviados h2 {
+    margin-bottom: 1.25rem;
+}
+
+#formulario-contacto {
+    display: grid;
+    gap: 1rem;
+}
+
+.campo-contacto {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.campo-contacto input,
+.campo-contacto select,
+.campo-contacto textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #735C48;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    color: #241B16;
+    font: inherit;
+}
+
+.campo-contacto textarea {
+    resize: vertical;
+}
+
+.campo-contacto :focus-visible,
+.boton-contacto:focus-visible,
+.mensaje-enviado button:focus-visible {
+    outline: 3px solid #751520;
+    outline-offset: 2px;
+}
+
+.campo-contacto [aria-invalid="true"] {
+    border-color: #A20E25;
+}
+
+.mensaje-error {
+    min-height: 1.2em;
+    color: #A20E25;
+}
+
+.opcion-llamada {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.opcion-llamada input {
+    width: 1rem;
+    height: 1rem;
+}
+
+.ayuda-mensaje {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.boton-contacto,
+.mensaje-enviado button {
+    border: 0;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    background-color: #751520;
+    color: #FFFFFF;
+    font: inherit;
+    cursor: pointer;
+}
+
+#estado-envio {
+    min-height: 1.2em;
+}
+
+.mensajes-enviados {
+    margin-top: 2rem;
+}
+
+#lista-mensajes {
+    display: grid;
+    gap: 1rem;
+}
+
+.mensaje-enviado {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #C9B8A4;
+    border-radius: 8px;
+    overflow-wrap: anywhere;
+}
+
+.mensaje-enviado h3 {
+    font-size: 1.1rem;
+}
+
+.mensaje-enviado button {
+    justify-self: start;
+    background-color: #A20E25;
+}
+
 @media (min-width: 768px) {
       .categorias {
         grid-template-columns: repeat(4, minmax(0, 1fr));
