@@ -131,10 +131,9 @@
         `${elementos.campoMensaje.value.length} / ${elementos.campoMensaje.maxLength} caracteres`;
     },
 
-    actualizarRequisitoTelefono(esObligatorio, mensajeError) {
+    actualizarRequisitoTelefono(esObligatorio) {
       elementos.campoTelefono.required = esObligatorio;
       elementos.estadoTelefono.textContent = esObligatorio ? "(obligatorio)" : "(opcional)";
-      mostrarError(elementos.campoTelefono, mensajeError);
     },
 
     leerFormularioContacto() {

@@ -1,20 +1,55 @@
 (function () {
-  const esTextoVacio = (valor) => typeof valor !== "string" || valor.trim() === "";
+  const MENSAJES_REQUERIDOS = {
+    nombre: "El nombre es obligatorio.",
+    email: "El correo electrónico es obligatorio.",
+    telefono: "El teléfono es obligatorio si prefieres que te llamemos.",
+    motivo: "Selecciona un motivo para el mensaje.",
+    mensaje: "El mensaje es obligatorio."
+  };
 
-  const validarCampoObligatorio = (valor) =>
-    esTextoVacio(valor) ? "Este campo es obligatorio." : null;
+  const validarCampo = (campo) => {
+    const valor = campo.value;
+    const validez = campo.validity;
 
-  const validarNombre = (valor) =>
-    esTextoVacio(valor) ? "El nombre es obligatorio." : null;
-
-  const validarEmail = (valor) => {
-    if (esTextoVacio(valor)) {
-      return "El correo electrónico es obligatorio.";
+    if (campo.required && (valor.trim() === "" || validez.valueMissing)) {
+      return MENSAJES_REQUERIDOS[campo.name] || "Este campo es obligatorio.";
     }
 
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor.trim())
-      ? null
-      : "Introduce un correo electrónico válido.";
+    if (validez.typeMismatch) {
+      return campo.type === "email"
+        ? "Introduce un correo electrónico válido."
+        : "El valor introducido no tiene un formato válido.";
+    }
+
+    if (campo.minLength >= 0 && valor.length < campo.minLength) {
+      return campo.name === "mensaje"
+        ? `El mensaje debe tener al menos ${campo.minLength} caracteres.`
+        : `Introduce al menos ${campo.minLength} caracteres.`;
+    }
+
+    if (campo.maxLength >= 0 && valor.length > campo.maxLength) {
+      return campo.name === "mensaje"
+        ? `El mensaje no puede superar los ${campo.maxLength} caracteres.`
+        : `No introduzcas más de ${campo.maxLength} caracteres.`;
+    }
+
+    if (validez.rangeUnderflow) {
+      return `El valor debe ser igual o superior a ${campo.min}.`;
+    }
+
+    if (validez.rangeOverflow) {
+      return `El valor debe ser igual o inferior a ${campo.max}.`;
+    }
+
+    if (validez.patternMismatch) {
+      return "El formato introducido no es válido.";
+    }
+
+    if (validez.stepMismatch) {
+      return "Introduce un valor permitido.";
+    }
+
+    return null;
   };
 
   const validarTelefono = (valor) => {
@@ -27,34 +62,8 @@
       : "Introduce un teléfono español válido (por ejemplo, 612 345 678).";
   };
 
-  const validarMensaje = (valor) => {
-    if (esTextoVacio(valor)) {
-      return "El mensaje es obligatorio.";
-    }
-
-    const longitud = valor.trim().length;
-
-    if (longitud < 20) {
-      return "El mensaje debe tener al menos 20 caracteres.";
-    }
-
-    return longitud <= 500 ? null : "El mensaje no puede superar los 500 caracteres.";
-  };
-
-  const validarContrasena = (valor) => {
-    if (esTextoVacio(valor)) {
-      return "La contraseña es obligatoria.";
-    }
-
-    return valor.length >= 8 ? null : "La contraseña debe tener al menos 8 caracteres.";
-  };
-
   window.Validacion = Object.freeze({
-    validarCampoObligatorio,
-    validarNombre,
-    validarEmail,
-    validarContrasena,
+    validarCampo,
     validarTelefono,
-    validarMensaje
   });
 })();

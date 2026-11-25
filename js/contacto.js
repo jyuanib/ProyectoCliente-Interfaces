@@ -4,45 +4,50 @@
   const UI = window.UI;
   const { elementos } = UI;
   const { campoNombre, campoEmail, campoTelefono, campoMotivo, campoMensaje, preferirLlamada } = elementos;
+  const campos = [campoNombre, campoEmail, campoTelefono, campoMotivo, campoMensaje];
+  const camposTocados = new Set();
 
-  function validarFormulario() {
-    let valido = true;
-    const errores = [
-      [campoNombre, window.Validacion.validarNombre(campoNombre.value)],
-      [campoEmail, window.Validacion.validarEmail(campoEmail.value)],
-      [
-        campoTelefono,
-        preferirLlamada.checked && campoTelefono.value.trim() === ""
-          ? "El teléfono es obligatorio si prefieres que te llamemos."
-          : window.Validacion.validarTelefono(campoTelefono.value)
-      ],
-      [
-        campoMotivo,
-        campoMotivo.value ? null : "Selecciona un motivo para el mensaje."
-      ],
-      [campoMensaje, window.Validacion.validarMensaje(campoMensaje.value)]
-    ];
-
-    errores.forEach(([campo, mensaje]) => {
-      UI.mostrarError(campo, mensaje);
-      if (mensaje) {
-        valido = false;
-      }
-    });
-
-    if (!valido) {
-      errores.find(([, mensaje]) => mensaje)[0].focus();
+  function obtenerError(campo) {
+    const errorNativo = window.Validacion.validarCampo(campo);
+    if (errorNativo) {
+      return errorNativo;
     }
 
-    return valido;
+    if (campo === campoTelefono) {
+      return window.Validacion.validarTelefono(campo.value);
+    }
+
+    return null;
+  }
+
+  function validarYMostrarCampo(campo) {
+    const mensaje = obtenerError(campo);
+    UI.mostrarError(campo, mensaje);
+    return mensaje;
+  }
+
+  function validarFormulario() {
+    const errores = campos.map((campo) => {
+      camposTocados.add(campo);
+      return { campo, mensaje: validarYMostrarCampo(campo) };
+    });
+    const primerError = errores.find(({ mensaje }) => mensaje);
+
+    if (primerError) {
+      primerError.campo.focus();
+      return false;
+    }
+
+    return true;
   }
 
   function actualizarRequisitoTelefono() {
-    const mensajeError =
-      preferirLlamada.checked && campoTelefono.value.trim() === ""
-        ? "El teléfono es obligatorio si prefieres que te llamemos."
-        : window.Validacion.validarTelefono(campoTelefono.value);
-    UI.actualizarRequisitoTelefono(preferirLlamada.checked, mensajeError);
+    UI.actualizarRequisitoTelefono(preferirLlamada.checked);
+    if (camposTocados.has(campoTelefono)) {
+      validarYMostrarCampo(campoTelefono);
+    } else {
+      UI.mostrarError(campoTelefono, null);
+    }
   }
 
   function mostrarMensajes() {
@@ -107,15 +112,35 @@
     window.Almacen.crear(NOMBRE_COLECCION, mensaje);
     guardarContactoRecordado(mensaje.nombre, mensaje.email);
     UI.limpiarFormularioContacto();
+    camposTocados.clear();
     rellenarContactoRecordado();
     UI.actualizarContadorMensaje();
     actualizarRequisitoTelefono();
+    campos.forEach((campo) => UI.mostrarError(campo, null));
     mostrarMensajes();
     UI.mostrarEstadoEnvio("Tu mensaje se ha enviado correctamente.");
   });
 
+  campos.forEach((campo) => {
+    campo.addEventListener("blur", () => {
+      camposTocados.add(campo);
+      validarYMostrarCampo(campo);
+    });
+    campo.addEventListener("input", () => {
+      if (camposTocados.has(campo)) {
+        validarYMostrarCampo(campo);
+      }
+    });
+    UI.mostrarError(campo, null);
+  });
+
   preferirLlamada.addEventListener("change", actualizarRequisitoTelefono);
-  campoMensaje.addEventListener("input", UI.actualizarContadorMensaje);
+  campoMensaje.addEventListener("input", () => {
+    UI.actualizarContadorMensaje();
+    if (camposTocados.has(campoMensaje)) {
+      validarYMostrarCampo(campoMensaje);
+    }
+  });
 
   elementos.listaMensajes.addEventListener("click", (evento) => {
     const boton = evento.target.closest("button[data-id]");
