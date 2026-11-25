@@ -105,13 +105,20 @@
       return null;
     }
 
-    const [anio, mes, dia] = valor.split("-").map(Number);
+    const fechaNacimiento = new Date(`${valor}T00:00:00Z`);
+    if (Number.isNaN(fechaNacimiento.getTime())) {
+      return "Introduce una fecha de nacimiento válida.";
+    }
+
     const anioActual = fechaActual.getFullYear();
-    const mesActual = fechaActual.getMonth() + 1;
+    const mesActual = fechaActual.getMonth();
     const diaActual = fechaActual.getDate();
 
-    let edad = anioActual - anio;
-    if (mesActual < mes || (mesActual === mes && diaActual < dia)) {
+    let edad = anioActual - fechaNacimiento.getUTCFullYear();
+    if (
+      mesActual < fechaNacimiento.getUTCMonth() ||
+      (mesActual === fechaNacimiento.getUTCMonth() && diaActual < fechaNacimiento.getUTCDate())
+    ) {
       edad -= 1;
     }
 

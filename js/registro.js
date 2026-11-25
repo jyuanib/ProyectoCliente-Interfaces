@@ -107,8 +107,8 @@
     const datosUsuario = {
       nombreUsuario: datosFormulario.nombreUsuario.trim(),
       email: datosFormulario.email.trim(),
-      fechaNacimiento: datosFormulario.fechaNacimiento,
-      aceptaCondiciones: datosFormulario.aceptaCondiciones
+      fechaNacimiento: new Date(`${datosFormulario.fechaNacimiento}T00:00:00Z`).toISOString().slice(0, 10),
+      aceptaCondiciones: Boolean(datosFormulario.aceptaCondiciones)
     };
 
     if (usuarioEnEdicion === undefined) {
@@ -145,6 +145,10 @@
     }
 
     if (boton.dataset.accion === "borrar") {
+      if (!window.confirm("¿Seguro que quieres borrar este usuario?")) {
+        return;
+      }
+
       const eliminado = window.Almacen.borrar(NOMBRE_COLECCION, boton.dataset.id);
       if (!eliminado) {
         UI.mostrarEstadoRegistro("No se encontró el usuario que quieres borrar.");
